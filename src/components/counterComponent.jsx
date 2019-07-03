@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
+	//includes any data the component needs
 	state = {
-		count: 0,
+		value: this.props.counter.value,
 		tags: ["tag 1", "tag 2", "tag 3"]
-	}; //includes any data the component needs
+	};
 
 	// constructor() {
 	// 	super();
@@ -28,20 +29,27 @@ class Counter extends Component {
 		// no access to "this" in an event handler,
 		// using an arrow function resolves – but experimental
 
-		this.setState({ count: this.state.count + 1 });
+		this.setState({ value: this.state.value + 1 });
 	};
 
 	render() {
+		//console.log("props", this.props); // includes all attributes we set in Counters component
+
 		return (
 			<React.Fragment>
 				<span className={this.getBadgeClasses()}>{this.formatCount()}</span>
 				<button
 					className="btn btn-secondary btn-sm"
-					// onClick={this.handleIncrement}
 					// whenever you need to pass an arg to event handler use the arrow function
 					onClick={() => this.handleIncrement({ id: 1 })}
 				>
 					Increment
+				</button>
+				<button
+					className="btn btn-danger btn-sm m-2"
+					onClick={() => this.props.onDelete(this.props.counter.id)}
+				>
+					Delete
 				</button>
 				{/* {this.state.tags.length === 0 && "Please create a new tag"} */}
 
@@ -52,12 +60,12 @@ class Counter extends Component {
 
 	getBadgeClasses() {
 		let classes = "badge m-2 badge-";
-		classes += this.state.count === 0 ? "warning" : "primary";
+		classes += this.state.value === 0 ? "warning" : "primary";
 		return classes;
 	}
 
 	formatCount() {
-		const { count } = this.state;
+		const { value: count } = this.state;
 		return count === 0 ? "Zero" : count;
 	}
 }
